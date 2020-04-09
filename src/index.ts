@@ -1,3 +1,5 @@
+import { Shape, Square } from "./interface";
+
 // canvas related vars
 var canvas = document.createElement("canvas");
 var ctx = canvas.getContext("2d");
@@ -12,8 +14,7 @@ function reOffset() {
     offsetX = BB.left;
     offsetY = BB.top;
 }
-var offsetX = 0;
-var offsetY = 0;
+var offsetX: number, offsetY: number;
 reOffset();
 window.onscroll = function (e) { reOffset(); }
 window.onresize = function (e) { reOffset(); }
@@ -21,17 +22,23 @@ canvas.onresize = function (e) { reOffset(); }
 
 // save relevant information about shapes drawn on the canvas
 var shapes = [];
+
 // define one circle and save it in the shapes[] array
 shapes.push({ x: 30, y: 30, radius: 15, color: "rgb(255,0,0)" });
 // define one rectangle and save it in the shapes[] array
 shapes.push({ x: 100, y: -1, width: 75, height: 35, color: "rgb(0,0,255)" });
 
+
+// var shapes: [Shape];
+// var square: Square = new Square(30, "rgb(255,0,0)", { x: 10, y: 10 }, 0);
+// shapes.push(square)
+
 // drag related vars
 var isDragging = false;
-var startX, startY;
+var startX: number, startY: number;
 
 // hold the index of the shape being dragged (if any)
-var selectedShapeIndex;
+var selectedShapeIndex: number;
 
 // draw the shapes on the canvas
 drawAll();
@@ -101,8 +108,8 @@ function handleMouseMove(e: MouseEvent) {
     var dy = mouseY - startY;
     // move the selected shape by the drag distance
     var selectedShape = shapes[selectedShapeIndex];
-    selectedShape.x += dx;
-    selectedShape.y += dy;
+    selectedShape.position.x += dx;
+    selectedShape.position.y += dy;
     // clear the canvas and redraw all shapes
     drawAll();
     // update the starting drag position (== the current mouse position)
@@ -133,13 +140,15 @@ function drawAll() {
     ctx.clearRect(0, 0, canvasWidth, canvasHeight);
     for (var i = 0; i < shapes.length; i++) {
         var shape = shapes[i];
+        // shape.draw(ctx)
         if (shape.radius) {
             // it's a circle
             ctx.beginPath();
             ctx.arc(shape.x, shape.y, shape.radius, 0, Math.PI * 2);
             ctx.fillStyle = shape.color;
             ctx.fill();
-        } else if (shape.width) {
+        }
+        if (shape.width) {
             // it's a rectangle
             ctx.fillStyle = shape.color;
             ctx.fillRect(shape.x, shape.y, shape.width, shape.height);
