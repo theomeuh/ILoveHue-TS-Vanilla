@@ -21,17 +21,17 @@ window.onresize = function (e) { reOffset(); }
 canvas.onresize = function (e) { reOffset(); }
 
 // save relevant information about shapes drawn on the canvas
-var shapes = [];
+// var shapes = [];
 
-// define one circle and save it in the shapes[] array
-shapes.push({ x: 30, y: 30, radius: 15, color: "rgb(255,0,0)" });
-// define one rectangle and save it in the shapes[] array
-shapes.push({ x: 100, y: -1, width: 75, height: 35, color: "rgb(0,0,255)" });
+// // define one circle and save it in the shapes[] array
+// shapes.push({ x: 30, y: 30, radius: 15, color: "rgb(255,0,0)" });
+// // define one rectangle and save it in the shapes[] array
+// shapes.push({ x: 100, y: -1, width: 75, height: 35, color: "rgb(0,0,255)" });
 
 
-// var shapes: [Shape];
-// var square: Square = new Square(30, "rgb(255,0,0)", { x: 10, y: 10 }, 0);
-// shapes.push(square)
+var shapes: Shape[] = [];
+var square: Square = new Square(30, "rgb(255,0,0)", { x: 10, y: 10 }, 0);
+shapes.push(square)
 
 // drag related vars
 var isDragging = false;
@@ -140,18 +140,18 @@ function drawAll() {
     ctx.clearRect(0, 0, canvasWidth, canvasHeight);
     for (var i = 0; i < shapes.length; i++) {
         var shape = shapes[i];
-        // shape.draw(ctx)
-        if (shape.radius) {
-            // it's a circle
-            ctx.beginPath();
-            ctx.arc(shape.x, shape.y, shape.radius, 0, Math.PI * 2);
-            ctx.fillStyle = shape.color;
-            ctx.fill();
-        }
-        if (shape.width) {
-            // it's a rectangle
-            ctx.fillStyle = shape.color;
-            ctx.fillRect(shape.x, shape.y, shape.width, shape.height);
-        }
+        shape.draw(ctx)
+        // if (shape.radius) {
+        //     // it's a circle
+        //     ctx.beginPath();
+        //     ctx.arc(shape.x, shape.y, shape.radius, 0, Math.PI * 2);
+        //     ctx.fillStyle = shape.color;
+        //     ctx.fill();
+        // }
+        // if (shape.width) {
+        //     // it's a rectangle
+        //     ctx.fillStyle = shape.color;
+        //     ctx.fillRect(shape.x, shape.y, shape.width, shape.height);
+        // }
     }
 }

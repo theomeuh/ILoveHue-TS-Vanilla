@@ -11,9 +11,16 @@ export interface Shape {
 
 
 export class Square implements Shape {
+    sideLength: number;
+    color: string;
+    position: { x: number, y: number };
+    rotation: number;
 
-    constructor(public sideLength: number, public color: string, public position: { x: number, y: number }, public rotation: number) {
-
+    constructor(sideLength: number, color: string, position: { x: number, y: number }, rotation: number) {
+        this.sideLength = sideLength;
+        this.color = color;
+        this.position = position;
+        this.rotation = rotation;
     }
 
     draw(ctx: CanvasRenderingContext2D) {
