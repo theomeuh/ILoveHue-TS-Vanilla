@@ -4,7 +4,9 @@
         "sourceMap": true, //debug
         "allowJs": true,
         "target": "ES5",
-        "module": "commonjs"
+        "module": "commonjs",
+        "moduleResolution": "node", // to import a single lodash function ?
+        "esModuleInterop": true, // to import a single lodash function
     },
     "include": [
         "./src/**/*"

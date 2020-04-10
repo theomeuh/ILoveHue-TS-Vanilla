@@ -1,7 +1,7 @@
 import { Shape, Square } from "./interface";
-import { clone } from "./utils";
 
-import { cloneDeep } from "lodash";
+import cloneDeep from 'lodash.clonedeep';
+
 
 // canvas related vars
 var canvas = document.createElement("canvas");
