@@ -1,9 +1,10 @@
 {
     "compilerOptions": {
         "outDir": "./dist/",
-        "sourceMap": true,      //debug
+        "sourceMap": true, //debug
         "allowJs": true,
-        "target": "es5"
+        "target": "ES5",
+        "module": "commonjs"
     },
     "include": [
         "./src/**/*"

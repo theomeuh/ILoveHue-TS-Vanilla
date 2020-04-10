@@ -5,11 +5,6 @@ export interface Shape {
     draw(ctx: CanvasRenderingContext2D): void;
 }
 
-// export interface Square extends Shape {
-//     readonly sideLength: number;
-// }
-
-
 export class Square implements Shape {
     sideLength: number;
     color: string;
@@ -23,6 +18,7 @@ export class Square implements Shape {
         this.rotation = rotation;
     }
 
+    /// No method because of deep copy bullshit
     draw(ctx: CanvasRenderingContext2D) {
         ctx.fillStyle = this.color;
         ctx.fillRect(this.position.x, this.position.y, this.sideLength, this.sideLength);

@@ -1,4 +1,7 @@
 import { Shape, Square } from "./interface";
+import { clone } from "./utils";
+
+import { cloneDeep } from "lodash";
 
 // canvas related vars
 var canvas = document.createElement("canvas");
@@ -21,20 +24,16 @@ window.onresize = function (e) { reOffset(); }
 canvas.onresize = function (e) { reOffset(); }
 
 // save relevant information about shapes drawn on the canvas
-// var shapes = [];
-
-// // define one circle and save it in the shapes[] array
-// shapes.push({ x: 30, y: 30, radius: 15, color: "rgb(255,0,0)" });
-// // define one rectangle and save it in the shapes[] array
-// shapes.push({ x: 100, y: -1, width: 75, height: 35, color: "rgb(0,0,255)" });
-
-
 var shapes: Shape[] = [];
+// keep track of canvas state before any move
+var shapes_saved: Shape[];
+
+// Add a square to shapes
 var square: Square = new Square(30, "rgb(255,0,0)", { x: 10, y: 10 }, 0);
 shapes.push(square)
 
 // drag related vars
-var isDragging = false;
+var isDragging: boolean = false;
 var startX: number, startY: number;
 
 // hold the index of the shape being dragged (if any)
@@ -54,6 +53,8 @@ function handleMouseDown(e: MouseEvent) {
     // tell the browser we're handling this event
     e.preventDefault();
     e.stopPropagation();
+    // deep copy shapes before any move
+    shapes_saved = cloneDeep(shapes);
     // calculate the current mouse position
     startX = (e.clientX - offsetX);
     startY = (e.clientY - offsetY);
@@ -82,6 +83,9 @@ function handleMouseUp(e: MouseEvent) {
     e.stopPropagation();
     // the drag is over -- clear the isDragging flag
     isDragging = false;
+    // shallow copy is ok to restore shapes
+    shapes = shapes_saved;
+    drawAll();
 }
 
 function handleMouseOut(e: MouseEvent) {
@@ -92,6 +96,9 @@ function handleMouseOut(e: MouseEvent) {
     e.stopPropagation();
     // the drag is over -- clear the isDragging flag
     isDragging = false;
+    // shallow copy is ok to restore shapes
+    shapes = shapes_saved;
+    drawAll();
 }
 
 function handleMouseMove(e: MouseEvent) {
@@ -115,13 +122,11 @@ function handleMouseMove(e: MouseEvent) {
     // update the starting drag position (== the current mouse position)
     startX = mouseX;
     startY = mouseY;
-
-    console.log(getPixelColor(ctx, mouseX, mouseY));
 }
 
 // given a color (which is unique) and shape object
 // return true/false whether mouse is inside the shape
-function isMouseInShape(shape, color) {
+function isMouseInShape(shape: Shape, color: string) {
     if (shape.color === color) {
         return (true);
     }
@@ -129,7 +134,7 @@ function isMouseInShape(shape, color) {
     return (false);
 }
 
-function getPixelColor(ctx, mouseX, mouseY) {
+function getPixelColor(ctx: CanvasRenderingContext2D, mouseX: number, mouseY: number) {
     const color = ctx.getImageData(mouseX, mouseY, 1, 1).data
     return "rgb(" + color[0] + "," + color[1] + "," + color[2] + ")"
 }
@@ -141,17 +146,5 @@ function drawAll() {
     for (var i = 0; i < shapes.length; i++) {
         var shape = shapes[i];
         shape.draw(ctx)
-        // if (shape.radius) {
-        //     // it's a circle
-        //     ctx.beginPath();
-        //     ctx.arc(shape.x, shape.y, shape.radius, 0, Math.PI * 2);
-        //     ctx.fillStyle = shape.color;
-        //     ctx.fill();
-        // }
-        // if (shape.width) {
-        //     // it's a rectangle
-        //     ctx.fillStyle = shape.color;
-        //     ctx.fillRect(shape.x, shape.y, shape.width, shape.height);
-        // }
     }
 }
