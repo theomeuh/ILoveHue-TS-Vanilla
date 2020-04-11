@@ -6,8 +6,10 @@ import cloneDeep from 'lodash.clonedeep';
 // canvas related vars
 const canvas = document.createElement("canvas");
 const ctx = canvas.getContext("2d");
-const canvasWidth = canvas.width;
-const canvasHeight = canvas.height;
+const canvasWidth = 500;
+const canvasHeight = 500;
+canvas.width = canvasWidth;
+canvas.height = canvasHeight;
 document.body.appendChild(canvas);
 canvas.style.border = '1px solid red';
 
@@ -28,11 +30,11 @@ var shapes: Shape[] = [];
 // keep track of canvas state before any move
 var shapes_saved: Shape[];
 
-// Add a square to shapes
+// add a square to shapes
 var square: Square = new Square(30, "rgb(255,0,0)", { x: 10, y: 10 }, 0);
 shapes.push(square)
 
-// Add another square to shapes
+// add another square to shapes
 var square: Square = new Square(30, "rgb(0,255,0)", { x: 50, y: 50 }, 0);
 shapes.push(square)
 
@@ -94,7 +96,7 @@ function handleMouseUp(e: MouseEvent) {
         x: e.clientX - offset.x,
         y: e.clientY - offset.y
     };
-    // Very rapid (re)draw to get the color under the mouse 
+    // very rapid (re)draw to get the color under dragged shape
     drawAll(shapes_saved);
     const color = getPixelColor(mousePos);
     drawAll(shapes)
