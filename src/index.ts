@@ -4,10 +4,10 @@ import cloneDeep from 'lodash.clonedeep';
 
 
 // canvas related vars
-var canvas = document.createElement("canvas");
-var ctx = canvas.getContext("2d");
-var canvasWidth = canvas.width;
-var canvasHeight = canvas.height;
+const canvas = document.createElement("canvas");
+const ctx = canvas.getContext("2d");
+const canvasWidth = canvas.width;
+const canvasHeight = canvas.height;
 document.body.appendChild(canvas);
 canvas.style.border = '1px solid red';
 
@@ -60,14 +60,14 @@ function handleMouseDown(e: MouseEvent) {
     // deep copy shapes before any move
     shapes_saved = cloneDeep(shapes);
     // calculate the current mouse position
-    startPos = { 
-        x: e.clientX - offset.x, 
-        y: e.clientY - offset.y 
+    startPos = {
+        x: e.clientX - offset.x,
+        y: e.clientY - offset.y
     };
     const color = getPixelColor(startPos);
     // test mouse position against all shapes
     // post result if mouse is in a shape
-    for (var i = 0; i < shapes.length; i++) {
+    for (let i = 0; i < shapes.length; i++) {
         if (isMouseInShape(shapes[i], color)) {
             // the mouse is inside this shape
             // select this shape
@@ -90,9 +90,9 @@ function handleMouseUp(e: MouseEvent) {
     // the drag is over -- clear the isDragging flag
     isDragging = false;
 
-    const mousePos: Position = { 
-        x: e.clientX - offset.x, 
-        y: e.clientY - offset.y 
+    const mousePos: Position = {
+        x: e.clientX - offset.x,
+        y: e.clientY - offset.y
     };
     // Very rapid (re)draw to get the color under the mouse 
     drawAll(shapes_saved);
@@ -146,7 +146,7 @@ function handleMouseMove(e: MouseEvent) {
         y: mousePos.y - startPos.y
     };
     // move the selected shape by the drag distance
-    var selectedShape = shapes[selectedShapeIndex];
+    const selectedShape = shapes[selectedShapeIndex];
     selectedShape.position.x += diffPos.x;
     selectedShape.position.y += diffPos.y;
     // clear the canvas and redraw all shapes ...
@@ -176,7 +176,7 @@ function getPixelColor(mousePos: Position) {
 // redraw all shapes in their current positions
 function drawAll(shapes: Shape[]) {
     ctx.clearRect(0, 0, canvasWidth, canvasHeight);
-    for (var i = 0; i < shapes.length; i++) {
+    for (let i = 0; i < shapes.length; i++) {
         shapes[i].draw(ctx);
     }
 }
