@@ -88,9 +88,6 @@ function handleMouseUp(e: MouseEvent) {
     // the drag is over -- clear the isDragging flag
     isDragging = false;
 
-    // // shallow copy is ok to restore shapes
-    // shapes = shapes_saved;
-    // drawAll();
 
     var mouseX = (e.clientX - offsetX);
     var mouseY = (e.clientY - offsetY);
@@ -99,23 +96,18 @@ function handleMouseUp(e: MouseEvent) {
     const color = getPixelColor(mouseX, mouseY)
     drawAll(shapes)
 
-    let switchedShapeIndex: number;
-    for (let i = 0; i < shapes.length; i++) {
-        if (isMouseInShape(shapes[i], color)) {
-            // the mouse is inside this shape
-            // select this shape
-            switchedShapeIndex = i;
-            // and return (==stop looking for 
-            //     further shapes under the mouse)
-            break;
-        }
+    const switchedShapeIndex: number = shapes.findIndex((shape) => isMouseInShape(shape, color));
+
+    // if there is a shape under the dragged shape
+    if (switchedShapeIndex !== -1) {
+        // switch their color
+        const color_selected = shapes_saved[selectedShapeIndex].color;
+        const color_switched = shapes_saved[switchedShapeIndex].color;
+        shapes_saved[selectedShapeIndex].color = color_switched;
+        shapes_saved[switchedShapeIndex].color = color_selected;
     }
-    const color_selected = shapes_saved[selectedShapeIndex].color;
-    const color_switched = shapes_saved[switchedShapeIndex].color;
 
-    shapes_saved[selectedShapeIndex].color = color_switched;
-    shapes_saved[switchedShapeIndex].color = color_selected;
-
+    // in any case, redraw
     shapes = shapes_saved;
     drawAll(shapes);
 }

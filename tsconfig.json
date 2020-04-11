@@ -3,7 +3,7 @@
         "outDir": "./dist/",
         "sourceMap": true, //debug
         "allowJs": true,
-        "target": "ES5",
+        "target": "ES6",
         "module": "commonjs",
         "moduleResolution": "node", // to import a single lodash function ?
         "esModuleInterop": true, // to import a single lodash function
