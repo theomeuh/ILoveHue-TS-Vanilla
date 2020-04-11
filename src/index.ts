@@ -32,6 +32,10 @@ var shapes_saved: Shape[];
 var square: Square = new Square(30, "rgb(255,0,0)", { x: 10, y: 10 }, 0);
 shapes.push(square)
 
+// Add another square to shapes
+var square: Square = new Square(30, "rgb(0,255,0)", { x: 50, y: 50 }, 0);
+shapes.push(square)
+
 // drag related vars
 var isDragging: boolean = false;
 var startX: number, startY: number;
@@ -40,7 +44,7 @@ var startX: number, startY: number;
 var selectedShapeIndex: number;
 
 // draw the shapes on the canvas
-drawAll();
+drawAll(shapes);
 
 // listen for mouse events
 canvas.onmousedown = handleMouseDown;
@@ -58,7 +62,7 @@ function handleMouseDown(e: MouseEvent) {
     // calculate the current mouse position
     startX = (e.clientX - offsetX);
     startY = (e.clientY - offsetY);
-    var color = getPixelColor(ctx, startX, startY)
+    var color = getPixelColor(startX, startY)
     // test mouse position against all shapes
     // post result if mouse is in a shape
     for (var i = 0; i < shapes.length; i++) {
@@ -83,9 +87,37 @@ function handleMouseUp(e: MouseEvent) {
     e.stopPropagation();
     // the drag is over -- clear the isDragging flag
     isDragging = false;
-    // shallow copy is ok to restore shapes
+
+    // // shallow copy is ok to restore shapes
+    // shapes = shapes_saved;
+    // drawAll();
+
+    var mouseX = (e.clientX - offsetX);
+    var mouseY = (e.clientY - offsetY);
+    // Very rapid (re)draw to get the color under the mouse 
+    drawAll(shapes_saved);
+    const color = getPixelColor(mouseX, mouseY)
+    drawAll(shapes)
+
+    let switchedShapeIndex: number;
+    for (let i = 0; i < shapes.length; i++) {
+        if (isMouseInShape(shapes[i], color)) {
+            // the mouse is inside this shape
+            // select this shape
+            switchedShapeIndex = i;
+            // and return (==stop looking for 
+            //     further shapes under the mouse)
+            break;
+        }
+    }
+    const color_selected = shapes_saved[selectedShapeIndex].color;
+    const color_switched = shapes_saved[switchedShapeIndex].color;
+
+    shapes_saved[selectedShapeIndex].color = color_switched;
+    shapes_saved[switchedShapeIndex].color = color_selected;
+
     shapes = shapes_saved;
-    drawAll();
+    drawAll(shapes);
 }
 
 function handleMouseOut(e: MouseEvent) {
@@ -96,9 +128,10 @@ function handleMouseOut(e: MouseEvent) {
     e.stopPropagation();
     // the drag is over -- clear the isDragging flag
     isDragging = false;
+
     // shallow copy is ok to restore shapes
     shapes = shapes_saved;
-    drawAll();
+    drawAll(shapes);
 }
 
 function handleMouseMove(e: MouseEvent) {
@@ -107,7 +140,7 @@ function handleMouseMove(e: MouseEvent) {
     // tell the browser we're handling this event
     e.preventDefault();
     e.stopPropagation();
-    // calculate the current mouse position         
+    // calculate the current mouse position         // TODO export2
     var mouseX = (e.clientX - offsetX);
     var mouseY = (e.clientY - offsetY);
     // how far has the mouse dragged from its previous mousemove position?
@@ -117,8 +150,10 @@ function handleMouseMove(e: MouseEvent) {
     var selectedShape = shapes[selectedShapeIndex];
     selectedShape.position.x += dx;
     selectedShape.position.y += dy;
-    // clear the canvas and redraw all shapes
-    drawAll();
+    // clear the canvas and redraw all shapes ...
+    drawAll(shapes);
+    // ... and redraw the selected shape so it appears above all other shapes
+    selectedShape.draw(ctx);
     // update the starting drag position (== the current mouse position)
     startX = mouseX;
     startY = mouseY;
@@ -134,17 +169,16 @@ function isMouseInShape(shape: Shape, color: string) {
     return (false);
 }
 
-function getPixelColor(ctx: CanvasRenderingContext2D, mouseX: number, mouseY: number) {
+function getPixelColor(mouseX: number, mouseY: number) {
     const color = ctx.getImageData(mouseX, mouseY, 1, 1).data
     return "rgb(" + color[0] + "," + color[1] + "," + color[2] + ")"
 }
 
 // clear the canvas and 
 // redraw all shapes in their current positions
-function drawAll() {
+function drawAll(shapes: Shape[]) {
     ctx.clearRect(0, 0, canvasWidth, canvasHeight);
     for (var i = 0; i < shapes.length; i++) {
-        var shape = shapes[i];
-        shape.draw(ctx)
+        shapes[i].draw(ctx);
     }
 }

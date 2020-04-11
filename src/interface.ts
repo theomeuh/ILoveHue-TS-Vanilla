@@ -1,5 +1,5 @@
 export interface Shape {
-    readonly color: string,     // "rgb(255,45,0)"
+    color: string,     // "rgb(255,45,0)"
     position: { x: number, y: number }
     rotation: number
     draw(ctx: CanvasRenderingContext2D): void;
