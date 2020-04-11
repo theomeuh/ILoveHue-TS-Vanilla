@@ -1,4 +1,4 @@
-import { Shape, Square } from "./interface";
+import { Shape, Square, Position } from "./interface";
 
 import cloneDeep from 'lodash.clonedeep';
 
@@ -13,11 +13,11 @@ canvas.style.border = '1px solid red';
 
 // used to calc canvas position relative to window
 function reOffset() {
-    var BB = canvas.getBoundingClientRect();
-    offsetX = BB.left;
-    offsetY = BB.top;
+    const BB = canvas.getBoundingClientRect();
+    offset = { x: BB.top, y: BB.left };
 }
-var offsetX: number, offsetY: number;
+var offset: Position;
+
 reOffset();
 window.onscroll = function (e) { reOffset(); }
 window.onresize = function (e) { reOffset(); }
@@ -38,7 +38,7 @@ shapes.push(square)
 
 // drag related vars
 var isDragging: boolean = false;
-var startX: number, startY: number;
+var startPos: Position;
 
 // hold the index of the shape being dragged (if any)
 var selectedShapeIndex: number;
@@ -60,9 +60,11 @@ function handleMouseDown(e: MouseEvent) {
     // deep copy shapes before any move
     shapes_saved = cloneDeep(shapes);
     // calculate the current mouse position
-    startX = (e.clientX - offsetX);
-    startY = (e.clientY - offsetY);
-    var color = getPixelColor(startX, startY)
+    startPos = { 
+        x: e.clientX - offset.x, 
+        y: e.clientY - offset.y 
+    };
+    const color = getPixelColor(startPos);
     // test mouse position against all shapes
     // post result if mouse is in a shape
     for (var i = 0; i < shapes.length; i++) {
@@ -88,12 +90,13 @@ function handleMouseUp(e: MouseEvent) {
     // the drag is over -- clear the isDragging flag
     isDragging = false;
 
-
-    var mouseX = (e.clientX - offsetX);
-    var mouseY = (e.clientY - offsetY);
+    const mousePos: Position = { 
+        x: e.clientX - offset.x, 
+        y: e.clientY - offset.y 
+    };
     // Very rapid (re)draw to get the color under the mouse 
     drawAll(shapes_saved);
-    const color = getPixelColor(mouseX, mouseY)
+    const color = getPixelColor(mousePos);
     drawAll(shapes)
 
     const switchedShapeIndex: number = shapes.findIndex((shape) => isMouseInShape(shape, color));
@@ -132,23 +135,26 @@ function handleMouseMove(e: MouseEvent) {
     // tell the browser we're handling this event
     e.preventDefault();
     e.stopPropagation();
-    // calculate the current mouse position         // TODO export2
-    var mouseX = (e.clientX - offsetX);
-    var mouseY = (e.clientY - offsetY);
+    // calculate the current mouse position         
+    const mousePos = {
+        x: e.clientX - offset.x,
+        y: e.clientY - offset.y
+    };
     // how far has the mouse dragged from its previous mousemove position?
-    var dx = mouseX - startX;
-    var dy = mouseY - startY;
+    const diffPos = {
+        x: mousePos.x - startPos.x,
+        y: mousePos.y - startPos.y
+    };
     // move the selected shape by the drag distance
     var selectedShape = shapes[selectedShapeIndex];
-    selectedShape.position.x += dx;
-    selectedShape.position.y += dy;
+    selectedShape.position.x += diffPos.x;
+    selectedShape.position.y += diffPos.y;
     // clear the canvas and redraw all shapes ...
     drawAll(shapes);
     // ... and redraw the selected shape so it appears above all other shapes
     selectedShape.draw(ctx);
     // update the starting drag position (== the current mouse position)
-    startX = mouseX;
-    startY = mouseY;
+    startPos = mousePos;
 }
 
 // given a color (which is unique) and shape object
@@ -161,8 +167,8 @@ function isMouseInShape(shape: Shape, color: string) {
     return (false);
 }
 
-function getPixelColor(mouseX: number, mouseY: number) {
-    const color = ctx.getImageData(mouseX, mouseY, 1, 1).data
+function getPixelColor(mousePos: Position) {
+    const color = ctx.getImageData(mousePos.x, mousePos.x, 1, 1).data
     return "rgb(" + color[0] + "," + color[1] + "," + color[2] + ")"
 }
 
