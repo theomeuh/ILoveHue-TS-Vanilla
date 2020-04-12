@@ -1,4 +1,5 @@
 import { Shape, Square, Position } from "./interface";
+import { gridGenerator } from "./gridGenerator";
 
 import cloneDeep from 'lodash.clonedeep';
 
@@ -30,13 +31,13 @@ var shapes: Shape[] = [];
 // keep track of canvas state before any move
 var shapes_saved: Shape[];
 
-// add a square to shapes
+// grid of all the same square
 var square: Square = new Square(30, "rgb(255,0,0)", { x: 10, y: 10 }, 0);
-shapes.push(square)
+console.log("start grid");
+const grid = gridGenerator([square], { dx: 40, dy: 40 }, { axisX: 2, axisY: 4 });
+console.log("finished grid");
+shapes = shapes.concat(grid)
 
-// add another square to shapes
-var square: Square = new Square(30, "rgb(0,255,0)", { x: 50, y: 50 }, 0);
-shapes.push(square)
 
 // drag related vars
 var isDragging: boolean = false;
