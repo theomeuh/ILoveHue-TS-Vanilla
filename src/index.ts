@@ -1,5 +1,6 @@
-import { Shape, Square, Position } from "./interface";
+import { Shape, Square, Position } from "./shape";
 import { gridGenerator } from "./gridGenerator";
+import { GradientColors } from "./color";
 
 import cloneDeep from 'lodash.clonedeep';
 
@@ -32,11 +33,13 @@ var shapes: Shape[] = [];
 var shapes_saved: Shape[];
 
 // grid of all the same square
-var square: Square = new Square(30, "rgb(255,0,0)", { x: 10, y: 10 }, 0);
-console.log("start grid");
-const grid = gridGenerator([square], { dx: 40, dy: 40 }, { axisX: 2, axisY: 4 });
-console.log("finished grid");
-shapes = shapes.concat(grid)
+var square: Square = new Square(80, "rgb(255,0,0)", { x: 0, y: 0 }, 0);
+const gColor: GradientColors = {
+    topLeftColor: { red: 255, green: 0, blue: 0 },
+    topRightColor: { red: 255, green: 127, blue: 0 },
+    bottomRigthColor: { red: 0, green: 127, blue: 255 },
+}
+shapes = gridGenerator([square], { dx: 80, dy: 80 }, { axisX: 3, axisY: 3 }, gColor);
 
 
 // drag related vars
@@ -101,9 +104,7 @@ function handleMouseUp(e: MouseEvent) {
     drawAll(shapes_saved);
     const color = getPixelColor(mousePos);
     drawAll(shapes)
-
     const switchedShapeIndex: number = shapes.findIndex((shape) => isMouseInShape(shape, color));
-
     // if there is a shape under the dragged shape
     if (switchedShapeIndex !== -1) {
         // switch their color
@@ -171,7 +172,7 @@ function isMouseInShape(shape: Shape, color: string) {
 }
 
 function getPixelColor(mousePos: Position) {
-    const color = ctx.getImageData(mousePos.x, mousePos.x, 1, 1).data
+    const color = ctx.getImageData(mousePos.x, mousePos.y, 1, 1).data
     return "rgb(" + color[0] + "," + color[1] + "," + color[2] + ")"
 }
 
