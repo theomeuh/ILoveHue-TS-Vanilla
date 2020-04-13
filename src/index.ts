@@ -33,13 +33,14 @@ var shapes: Shape[] = [];
 var shapes_saved: Shape[];
 
 // grid of all the same square
-var square: Square = new Square(80, "rgb(255,0,0)", { x: 0, y: 0 }, 0);
+var square: Square = new Square(50, "rgb(255,0,0)", { x: 0, y: 0 }, 0);
 const gColor: GradientColors = {
-    topLeftColor: { red: 255, green: 0, blue: 0 },
-    topRightColor: { red: 255, green: 127, blue: 0 },
-    bottomRigthColor: { red: 0, green: 127, blue: 255 },
+    topLeftColor: { red: 239, green: 252, blue: 84 },
+    topRightColor: { red: 120, green: 239, blue: 197 },
+    bottomRigthColor: { red: 74, green: 69, blue: 215 },
+    bottomLeftColor: { red: 235, green: 66, blue: 205 },
 }
-shapes = gridGenerator([square], { dx: 80, dy: 80 }, { axisX: 3, axisY: 3 }, gColor);
+shapes = gridGenerator([square], { dx: 50, dy: 50 }, { axisX: 10, axisY: 10 }, gColor);
 
 
 // drag related vars

@@ -1,3 +1,5 @@
+import { Position } from "./shape";
+
 export interface Color {
     red: number,
     green: number,
@@ -5,9 +7,10 @@ export interface Color {
 }
 
 export interface GradientColors {
-    topLeftColor: Color
-    topRightColor: Color
-    bottomRigthColor: Color
+    topLeftColor: Color,
+    topRightColor: Color,
+    bottomRigthColor: Color,
+    bottomLeftColor: Color,
 }
 
 export function rgbStr(color: Color): string {
@@ -16,22 +19,41 @@ export function rgbStr(color: Color): string {
 
 
 export function getColorLinearGradient(xRatio: number, yRatio: number, gColor: GradientColors): string {
-    // first regression on one axis
-    const xGradientedColor: Color = {
-        red: linearReg(gColor.topLeftColor.red, gColor.topRightColor.red, xRatio),
-        green: linearReg(gColor.topLeftColor.green, gColor.topRightColor.green, xRatio),
-        blue: linearReg(gColor.topLeftColor.blue, gColor.topRightColor.blue, xRatio)
-    };
-
-    // then on the other axis
     const finalColor: Color = {
-        red: Math.floor(linearReg(xGradientedColor.red, gColor.bottomRigthColor.red, yRatio)),
-        green: Math.floor(linearReg(xGradientedColor.green, gColor.bottomRigthColor.green, yRatio)),
-        blue: Math.floor(linearReg(xGradientedColor.blue, gColor.bottomRigthColor.blue, yRatio)),
-    };
+        red: Math.floor(bilinearReg(
+            { x: xRatio, y: yRatio },
+            gColor.topLeftColor.red,     // f00
+            gColor.topRightColor.red,    // f10
+            gColor.bottomLeftColor.red,  // f01
+            gColor.bottomRigthColor.red, // f11
+        )),
+        green: Math.floor(bilinearReg(
+            { x: xRatio, y: yRatio },
+            gColor.topLeftColor.green,     // f00
+            gColor.topRightColor.green,    // f10
+            gColor.bottomLeftColor.green,  // f01
+            gColor.bottomRigthColor.green, // f11
+        )),
+        blue: Math.floor(bilinearReg(
+            { x: xRatio, y: yRatio },
+            gColor.topLeftColor.blue,     // f00
+            gColor.topRightColor.blue,    // f10
+            gColor.bottomLeftColor.blue,  // f01
+            gColor.bottomRigthColor.blue, // f11
+        )),
+    }
     return rgbStr(finalColor);
 }
 
-function linearReg(start: number, end: number, ratio: number): number {
-    return ((end - start) * ratio + start)
+function bilinearReg(point: Position, f00: number, f10: number, f01: number, f11: number): number {
+    /// return the bilinear regression of function f at point (x,y)
+    /// given 4 values of f at the 4 corners of the unit square
+    /// https://en.wikipedia.org/wiki/Bilinear_interpolation#Unit_square
+    const value = (
+        f00 * (1 - point.x) * (1 - point.y) +
+        f10 * point.x * (1 - point.y) +
+        f01 * (1 - point.x) * point.y +
+        f11 * point.x * point.y
+    );
+    return value;
 }
