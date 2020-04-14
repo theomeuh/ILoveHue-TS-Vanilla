@@ -1,4 +1,4 @@
-import { Shape, Square, Triangle, Position } from "./shape";
+import { Shape, Square, Triangle, Position, TriangleRotation } from "./shape";
 import { gridGenerator, hexGridGenerator } from "./gridGenerator";
 import { GradientColors } from "./color";
 
@@ -15,7 +15,7 @@ canvas.height = canvasHeight;
 document.body.appendChild(canvas);
 canvas.style.border = '1px solid red';
 
-ctx.translate(200, 0);
+ctx.translate(250, 0);
 
 // used to calc canvas position relative to window
 function reOffset() {
@@ -34,15 +34,22 @@ var shapes: Shape[] = [];
 // keep track of canvas state before any move
 var shapes_saved: Shape[];
 
-// grid of all the same square
-var triangle: Triangle = new Triangle(50, "rgb(255,0,0)", { x: 0, y: 0 }, 0);
 const gColor: GradientColors = {
     topLeftColor: { red: 239, green: 252, blue: 84 },
     topRightColor: { red: 120, green: 239, blue: 197 },
     bottomRigthColor: { red: 74, green: 69, blue: 215 },
     bottomLeftColor: { red: 235, green: 66, blue: 205 },
 }
-shapes = hexGridGenerator([triangle], { dx: 50, dy: 50 }, { axisX: 10, axisY: 10 }, gColor);
+
+// grid of same square
+var square: Square = new Square(50, "rgb(0,0,0)", { x: 0, y: 0 }, 0);
+shapes = gridGenerator([square], { dx: 50, dy: 50 }, { axisX: 10, axisY: 10 }, gColor);
+
+// grid of the same triangle
+// var triangleFlat: Triangle = new Triangle(50, "rgb(255,0,0)", { x: 0, y: 0 }, TriangleRotation.Flat);
+// var trianglePointy: Triangle = new Triangle(50, "rgb(255,0,0)", { x: 50, y: 0 }, TriangleRotation.Pointy);
+
+// shapes = hexGridGenerator([triangleFlat, trianglePointy], { dx: 50, dy: 50 }, { axisX: 10, axisY: 10 }, gColor);
 
 
 // drag related vars

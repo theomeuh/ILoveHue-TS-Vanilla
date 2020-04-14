@@ -1,4 +1,4 @@
-import { Shape } from "./shape";
+import { Shape, Position } from "./shape";
 import { GradientColors, getColorLinearGradient } from "./color";
 
 import cloneDeep from 'lodash.clonedeep';
@@ -32,6 +32,8 @@ export function gridGenerator(
                 // change shape position
                 shape.position.x += translation.dx * repX;
                 shape.position.y += translation.dy * repY;
+                shape.colorPoint.x += translation.dx * repX;
+                shape.colorPoint.y += translation.dy * repY;
                 // change color of the shape according to its position on the global grid
                 const xRatio = shape.position.x / (translation.dx * repetition.axisX); // final grid is size of pattern * repetion width (or heigh)
                 const yRatio = shape.position.y / (translation.dy * repetition.axisY);
@@ -56,18 +58,23 @@ export function hexGridGenerator(
             const translatedPattern = cloneDeep(unitPattern);
             for (let shape of translatedPattern) {
                 // change shape position
-
-                shape.position = {
-                    x: shape.position.x + translation.dx * repX - translation.dy * repY / 2,
-                    y: shape.position.y + translation.dy * repY * Math.sqrt(3) / 2,
-                }
+                shape.position = hexMove(shape.position, translation, { repX, repY })
+                shape.colorPoint = hexMove(shape.colorPoint, translation, { repX, repY })
                 // change color of the shape according to its position on the global grid
-                const xRatio = shape.position.x / (translation.dx * repetition.axisX); // final grid is size of pattern * repetion width (or heigh)
-                const yRatio = shape.position.y / (translation.dy * repetition.axisY);
+                const xRatio = shape.colorPoint.x / (translation.dx * repetition.axisX); // final grid is size of pattern * repetion width (or heigh)
+                const yRatio = shape.colorPoint.y / (translation.dy * repetition.axisY * Math.sqrt(3) / 2);
                 shape.color = getColorLinearGradient(xRatio, yRatio, gColor);
             }
             grid.push(...translatedPattern);
         }
     }
     return grid;
+}
+
+function hexMove(pos: Position, translation: Translation, step: { repX: number, repY: number }): Position {
+    pos = {
+        x: pos.x + translation.dx * step.repX - translation.dy * step.repY / 2,
+        y: pos.y + translation.dy * step.repY * Math.sqrt(3) / 2,
+    }
+    return pos;
 }
