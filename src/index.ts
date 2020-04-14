@@ -1,5 +1,5 @@
-import { Shape, Square, Position } from "./shape";
-import { gridGenerator } from "./gridGenerator";
+import { Shape, Square, Triangle, Position } from "./shape";
+import { gridGenerator, hexGridGenerator } from "./gridGenerator";
 import { GradientColors } from "./color";
 
 import cloneDeep from 'lodash.clonedeep';
@@ -8,12 +8,14 @@ import cloneDeep from 'lodash.clonedeep';
 // canvas related vars
 const canvas = document.createElement("canvas");
 const ctx = canvas.getContext("2d");
-const canvasWidth = 500;
-const canvasHeight = 500;
+const canvasWidth = 1200;
+const canvasHeight = 700;
 canvas.width = canvasWidth;
 canvas.height = canvasHeight;
 document.body.appendChild(canvas);
 canvas.style.border = '1px solid red';
+
+ctx.translate(200, 0);
 
 // used to calc canvas position relative to window
 function reOffset() {
@@ -33,14 +35,14 @@ var shapes: Shape[] = [];
 var shapes_saved: Shape[];
 
 // grid of all the same square
-var square: Square = new Square(50, "rgb(255,0,0)", { x: 0, y: 0 }, 0);
+var triangle: Triangle = new Triangle(50, "rgb(255,0,0)", { x: 0, y: 0 }, 0);
 const gColor: GradientColors = {
     topLeftColor: { red: 239, green: 252, blue: 84 },
     topRightColor: { red: 120, green: 239, blue: 197 },
     bottomRigthColor: { red: 74, green: 69, blue: 215 },
     bottomLeftColor: { red: 235, green: 66, blue: 205 },
 }
-shapes = gridGenerator([square], { dx: 50, dy: 50 }, { axisX: 10, axisY: 10 }, gColor);
+shapes = hexGridGenerator([triangle], { dx: 50, dy: 50 }, { axisX: 10, axisY: 10 }, gColor);
 
 
 // drag related vars
@@ -180,7 +182,7 @@ function getPixelColor(mousePos: Position) {
 // clear the canvas and 
 // redraw all shapes in their current positions
 function drawAll(shapes: Shape[]) {
-    ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+    ctx.clearRect(-canvasWidth, -canvasHeight, 2 * canvasWidth, 2 * canvasHeight);
     for (let i = 0; i < shapes.length; i++) {
         shapes[i].draw(ctx);
     }
