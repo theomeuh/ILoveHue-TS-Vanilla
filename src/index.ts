@@ -44,20 +44,20 @@ const gColor: GradientColors = {
 }
 
 // grid of same square
-// var square: Square = new Square(50, "rgb(0,0,0)", { x: 0, y: 0 }, 0, 'square');
+// const square: Square = new Square(50, "rgb(0,0,0)", { x: 0, y: 0 }, 0, 'square');
 // const pattern: Pattern = [square];
 // grid_original = gridGenerator(pattern, { dx: 50, dy: 50 }, { axisX: 10, axisY: 10 }, gColor);
 
 // grid of 2 kind of square
-// var bigSquare: Square = new Square(50, "rgb(0,0,0)", { x: 0, y: 0 }, 0, 'bigSquare');
-// var smallTopSquare: Square = new Square(25, "rgb(0,0,0)", { x: 50, y: 0 }, 0, 'smallSquare');
-// var smallBottomSquare: Square = new Square(25, "rgb(0,0,0)", { x: 50, y: 25 }, 0, 'smallSquare');
+// const bigSquare: Square = new Square(50, "rgb(0,0,0)", { x: 0, y: 0 }, 0, 'bigSquare');
+// const smallTopSquare: Square = new Square(25, "rgb(0,0,0)", { x: 50, y: 0 }, 0, 'smallSquare');
+// const smallBottomSquare: Square = new Square(25, "rgb(0,0,0)", { x: 50, y: 25 }, 0, 'smallSquare');
 // const pattern: Pattern = [bigSquare, smallTopSquare, smallBottomSquare];
 // grid_original = gridGenerator(pattern, { dx: 75, dy: 50 }, { axisX: 10, axisY: 10 }, gColor);
 
 // grid of the same triangle
-var triangleFlat: Triangle = new Triangle(50, "rgb(255,0,0)", { x: 0, y: 0 }, TriangleRotation.Flat, 'triangle');
-var trianglePointy: Triangle = new Triangle(50, "rgb(255,0,0)", { x: 50, y: 0 }, TriangleRotation.Pointy, 'triangle');
+const triangleFlat: Triangle = new Triangle(50, "rgb(255,0,0)", { x: 0, y: 0 }, TriangleRotation.Flat, 'triangle');
+const trianglePointy: Triangle = new Triangle(50, "rgb(255,0,0)", { x: 50, y: 0 }, TriangleRotation.Pointy, 'triangle');
 const pattern: Pattern = [triangleFlat, trianglePointy];
 grid_original = hexGridGenerator(pattern, { dx: 50, dy: 50 }, { axisX: 10, axisY: 10 }, gColor);
 
