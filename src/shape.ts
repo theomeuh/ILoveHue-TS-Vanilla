@@ -8,6 +8,7 @@ export interface Shape {
     position: Position;
     colorPoint: Position;    // point, relatively to position, where to take the color: barycenter is ideal
     rotation: number | string;
+    switchClass: string;      // only shapes that belong to the same class can be switched
     draw(ctx: CanvasRenderingContext2D): void;
 }
 
@@ -17,12 +18,14 @@ export class Square implements Shape {
     position: Position;
     colorPoint: Position;
     rotation: number;   // TODO implement flat and pointy
+    switchClass: string;
 
-    constructor(sideLength: number, color: string, position: Position, rotation: number) {
+    constructor(sideLength: number, color: string, position: Position, rotation: number, switchClass: string) {
         this.sideLength = sideLength;
         this.color = color;
         this.position = position;
         this.rotation = rotation;
+        this.switchClass = switchClass;
 
         this.colorPoint = {
             x: this.position.x + sideLength / 2,
@@ -52,12 +55,14 @@ export class Triangle implements Shape {
     position: Position;
     colorPoint: Position;
     rotation: TriangleRotation;
+    switchClass: string;
 
-    constructor(sideLength: number, color: string, position: Position, rotation: TriangleRotation) {
+    constructor(sideLength: number, color: string, position: Position, rotation: TriangleRotation,switchClass: string) {
         this.sideLength = sideLength;
         this.color = color;
         this.position = position;
         this.rotation = rotation;
+        this.switchClass = switchClass;
 
         if (this.rotation === TriangleRotation.Flat) {
             this.colorPoint = {

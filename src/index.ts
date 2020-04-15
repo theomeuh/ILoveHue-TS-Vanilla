@@ -45,12 +45,16 @@ const gColor: GradientColors = {
 // var square: Square = new Square(50, "rgb(0,0,0)", { x: 0, y: 0 }, 0);
 // shapes = gridGenerator([square], { dx: 50, dy: 50 }, { axisX: 10, axisY: 10 }, gColor);
 
-// TODO 2 type of square grid
+// grid of 2 kind of square
+var bigSquare: Square = new Square(50, "rgb(0,0,0)", { x: 0, y: 0 }, 0, 'bigSquare');
+var smallTopSquare: Square = new Square(25, "rgb(0,0,0)", { x: 50, y: 0 }, 0, 'smallSquare');
+var smallBottomSquare: Square = new Square(25, "rgb(0,0,0)", { x: 50, y: 25 }, 0, 'smallSquare');
+shapes = gridGenerator([bigSquare, smallTopSquare, smallBottomSquare], { dx: 75, dy: 50 }, { axisX: 10, axisY: 10 }, gColor);
 
 // grid of the same triangle
-var triangleFlat: Triangle = new Triangle(50, "rgb(255,0,0)", { x: 0, y: 0 }, TriangleRotation.Flat);
-var trianglePointy: Triangle = new Triangle(50, "rgb(255,0,0)", { x: 50, y: 0 }, TriangleRotation.Pointy);
-shapes = hexGridGenerator([triangleFlat, trianglePointy], { dx: 50, dy: 50 }, { axisX: 10, axisY: 10 }, gColor);
+// var triangleFlat: Triangle = new Triangle(50, "rgb(255,0,0)", { x: 0, y: 0 }, TriangleRotation.Flat);
+// var trianglePointy: Triangle = new Triangle(50, "rgb(255,0,0)", { x: 50, y: 0 }, TriangleRotation.Pointy);
+// shapes = hexGridGenerator([triangleFlat, trianglePointy], { dx: 50, dy: 50 }, { axisX: 10, axisY: 10 }, gColor);
 
 
 // drag related vars
@@ -115,9 +119,12 @@ function handleMouseUp(e: MouseEvent) {
     drawAll(shapes_saved);
     const color = getPixelColor(mousePos);
     drawAll(shapes)
+    
     const switchedShapeIndex: number = shapes.findIndex((shape) => isMouseInShape(shape, color));
-    // if there is a shape under the dragged shape
-    if (switchedShapeIndex !== -1) {    // TODO switch only if same size
+    // if there is a shape under the dragged shape and they belong to same switchClass
+    if (switchedShapeIndex !== -1 &&
+        shapes_saved[selectedShapeIndex].switchClass === shapes_saved[switchedShapeIndex].switchClass
+    ) {
         // switch their color
         const color_selected = shapes_saved[selectedShapeIndex].color;
         const color_switched = shapes_saved[switchedShapeIndex].color;
