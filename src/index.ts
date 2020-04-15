@@ -1,6 +1,6 @@
 import cloneDeep from 'lodash.clonedeep';
 import { Grid } from "./gridGenerator";
-import { squareBigSmallGrid } from "./preset";
+import { squareBigSmallGrid, squareGrid, triangleGrid } from "./preset";
 import { Position, Shape } from "./shape";
 
 
@@ -15,6 +15,10 @@ canvas.height = canvasHeight;
 canvas.style.border = '1px solid red';
 document.getElementById("canvasCol").appendChild(canvas);
 ctx.translate(100, 50);
+
+// arrows related vars
+const leftArrow = document.getElementById('leftArrow');
+const rightArrow = document.getElementById('rightArrow');
 
 // used to calc canvas position relative to window
 var offset: Position;
@@ -34,15 +38,11 @@ var grid: Grid = [];
 var grid_saved: Grid;
 // contains the original grid with color sorted on a gradient.
 var grid_original: Grid;
+// Store preset levels
+const levels: Grid[] = [squareGrid, squareBigSmallGrid, triangleGrid]
+var levelIndex: number = 0;
+levelSetUp();
 
-grid_original = squareBigSmallGrid;
-// grid_original = squareGrid;
-// grid_original = triangleGrid;
-grid = cloneDeep(grid_original);
-// modify grid
-gridShuffle(grid);
-// draw the shapes on the canvas
-drawAll(grid);
 
 // ### Mouse event stuff ###
 // drag related vars
@@ -57,6 +57,8 @@ canvas.onmousedown = handleMouseDown;
 canvas.onmousemove = handleMouseMove;
 canvas.onmouseup = handleMouseUp;
 canvas.onmouseout = handleMouseOut;
+leftArrow.addEventListener('click', handleClickLeftArrow)
+rightArrow.addEventListener('click', handleClickRightArrow)
 
 // ### Function zone ###
 function handleMouseDown(e: MouseEvent) {
@@ -169,6 +171,22 @@ function handleMouseMove(e: MouseEvent) {
     startPos = mousePos;
 }
 
+function handleClickLeftArrow(e: MouseEvent) {
+    // tell the browser we're handling this event
+    e.preventDefault();
+    e.stopPropagation();
+    levelIndex = (levelIndex - 1) % levels.length;
+    levelSetUp();
+}
+
+function handleClickRightArrow(e: MouseEvent) {
+    // tell the browser we're handling this event
+    e.preventDefault();
+    e.stopPropagation();
+    levelIndex = (levelIndex + 1) % levels.length;
+    levelSetUp();
+}
+
 // given a color (which is unique) and shape object
 // return true/false whether mouse is inside the shape
 function isMouseInShape(shape: Shape, color: string) {
@@ -215,4 +233,14 @@ function checkGrid(grid_original: Grid, grid: Grid): boolean {
         }
     }
     return true;
+}
+
+function levelSetUp() {
+    grid_original = levels[levelIndex];
+
+    grid = cloneDeep(grid_original);
+    // modify grid
+    gridShuffle(grid);
+    // draw the shapes on the canvas
+    drawAll(grid);
 }
