@@ -22,7 +22,7 @@ export const squareBigSmallGrid = (() => {
     const smallTopSquare: Square = new Square(25, "rgb(0,0,0)", { x: 50, y: 0 }, 0, 'smallSquare');
     const smallBottomSquare: Square = new Square(25, "rgb(0,0,0)", { x: 50, y: 25 }, 0, 'smallSquare');
     const pattern: Pattern = [bigSquare, smallTopSquare, smallBottomSquare];
-    return gridGenerator(pattern, { dx: 75, dy: 50 }, { axisX: 10, axisY: 10 }, gColor);
+    return gridGenerator(pattern, { dx: 75, dy: 50 }, { axisX: 8, axisY: 10 }, gColor);
 })();
 
 // grid of same triangle

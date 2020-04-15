@@ -8,13 +8,13 @@ import { Position, Shape } from "./shape";
 // canvas related vars
 const canvas = document.createElement("canvas");
 const ctx = canvas.getContext("2d");
-const canvasWidth = 1200;
+const canvasWidth = 900;
 const canvasHeight = 700;
 canvas.width = canvasWidth;
 canvas.height = canvasHeight;
 canvas.style.border = '1px solid red';
 document.getElementById("canvasCol").appendChild(canvas);
-ctx.translate(100, 50);
+ctx.translate(150, 50);
 
 // arrows related vars
 const leftArrow = document.getElementById('leftArrow');
