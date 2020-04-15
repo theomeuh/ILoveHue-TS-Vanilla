@@ -1,7 +1,7 @@
-import { Shape, Position } from "./shape";
-import { GradientColors, getColorLinearGradient } from "./color";
-
 import cloneDeep from 'lodash.clonedeep';
+import { getColorLinearGradient, GradientColors } from "./color";
+import { Position, Shape } from "./shape";
+
 
 
 export type Pattern = Shape[]; // Smallest pattern of a periodic grid. Colors set but not revelant
@@ -74,7 +74,7 @@ export function hexGridGenerator(
 function hexMove(pos: Position, translation: Translation, step: { repX: number, repY: number }): Position {
     // This normalized term avoids the natural shear of hex grids. 
     // The regular term would be "- translation.dy * step.repY / 2"
-    const lignAlignementTerm = step.repY % 2 === 0 ? 0 : - translation.dy / 2   
+    const lignAlignementTerm = step.repY % 2 === 0 ? 0 : - translation.dy / 2
     pos = {
         x: pos.x + translation.dx * step.repX + lignAlignementTerm,
         y: pos.y + translation.dy * step.repY * Math.sqrt(3) / 2,

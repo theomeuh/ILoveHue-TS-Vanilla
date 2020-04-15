@@ -1,8 +1,8 @@
-import { Shape, Square, Triangle, Position, TriangleRotation } from "./shape";
-import { gridGenerator, hexGridGenerator, Grid, Pattern } from "./gridGenerator";
-import { GradientColors } from "./color";
-
 import cloneDeep from 'lodash.clonedeep';
+import { Grid } from "./gridGenerator";
+import { squareBigSmallGrid } from "./preset";
+import { Position, Shape } from "./shape";
+
 
 
 // canvas related vars
@@ -36,34 +36,12 @@ var grid_saved: Grid;
 // contains the original grid with color sorted on a gradient.
 var grid_original: Grid;
 
-const gColor: GradientColors = {
-    topLeftColor: { red: 239, green: 252, blue: 84 },
-    topRightColor: { red: 120, green: 239, blue: 197 },
-    bottomRigthColor: { red: 74, green: 69, blue: 215 },
-    bottomLeftColor: { red: 235, green: 66, blue: 205 },
-}
-
-// grid of same square
-// const square: Square = new Square(50, "rgb(0,0,0)", { x: 0, y: 0 }, 0, 'square');
-// const pattern: Pattern = [square];
-// grid_original = gridGenerator(pattern, { dx: 50, dy: 50 }, { axisX: 10, axisY: 10 }, gColor);
-
-// grid of 2 kind of square
-// const bigSquare: Square = new Square(50, "rgb(0,0,0)", { x: 0, y: 0 }, 0, 'bigSquare');
-// const smallTopSquare: Square = new Square(25, "rgb(0,0,0)", { x: 50, y: 0 }, 0, 'smallSquare');
-// const smallBottomSquare: Square = new Square(25, "rgb(0,0,0)", { x: 50, y: 25 }, 0, 'smallSquare');
-// const pattern: Pattern = [bigSquare, smallTopSquare, smallBottomSquare];
-// grid_original = gridGenerator(pattern, { dx: 75, dy: 50 }, { axisX: 10, axisY: 10 }, gColor);
-
-// grid of the same triangle
-const triangleFlat: Triangle = new Triangle(50, "rgb(255,0,0)", { x: 0, y: 0 }, TriangleRotation.Flat, 'triangle');
-const trianglePointy: Triangle = new Triangle(50, "rgb(255,0,0)", { x: 50, y: 0 }, TriangleRotation.Pointy, 'triangle');
-const pattern: Pattern = [triangleFlat, trianglePointy];
-grid_original = hexGridGenerator(pattern, { dx: 50, dy: 50 }, { axisX: 10, axisY: 10 }, gColor);
-
+grid_original = squareBigSmallGrid;
+// grid_original = squareGrid;
+// grid_original = triangleGrid;
 grid = cloneDeep(grid_original);
 // modify grid
-gridShuffle(grid, pattern);
+gridShuffle(grid);
 
 
 // drag related vars
@@ -217,9 +195,9 @@ function drawAll(shapes: Shape[]) {
     }
 }
 
-function gridShuffle(grid: Grid, pattern: Pattern) {
+function gridShuffle(grid: Grid) {
     const tiles_count = grid.length;
-    const switchClasses = [...new Set(pattern.map(x => x.switchClass))] // list of distinct switch classes
+    const switchClasses = [...new Set(grid.map(x => x.switchClass))] // list of distinct switch classes
     for (let switchClass of switchClasses) {
         let wip_shapes = grid.filter(x => x.switchClass === switchClass);
         for (let i = 0; i < 1; i++) {   // TODO change shuffle number;

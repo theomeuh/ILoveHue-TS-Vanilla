@@ -104,8 +104,6 @@ export class Triangle implements Shape {
     }
 }
 
-
-
 export enum TriangleRotation {
     Flat = "flat",
     Pointy = "pointy",
