@@ -4,8 +4,8 @@ import { GradientColors, getColorLinearGradient } from "./color";
 import cloneDeep from 'lodash.clonedeep';
 
 
-type Pattern = Shape[]; // Smallest pattern of a periodic grid. Colors set but not revelant
-type Grid = Shape[];    // Repeated pattern. If sorted, colors create a gradient
+export type Pattern = Shape[]; // Smallest pattern of a periodic grid. Colors set but not revelant
+export type Grid = Shape[];    // Repeated pattern. If sorted, colors create a gradient
 
 
 interface Translation {
