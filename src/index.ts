@@ -12,15 +12,15 @@ const canvasWidth = 1200;
 const canvasHeight = 700;
 canvas.width = canvasWidth;
 canvas.height = canvasHeight;
-document.body.appendChild(canvas);
+document.getElementById("canvasCol").appendChild(canvas);
 canvas.style.border = '1px solid red';
 
-ctx.translate(250, 0);
+ctx.translate(100, 50);
 
 // used to calc canvas position relative to window
 function reOffset() {
     const BB = canvas.getBoundingClientRect();
-    offset = { x: BB.top, y: BB.left };
+    offset = { x: BB.left, y: BB.top };
 }
 var offset: Position;
 
