@@ -60,7 +60,7 @@ export function hexGridGenerator(
                 // change shape position
                 shape.position = hexMove(shape.position, translation, { repX, repY })
                 shape.colorPoint = hexMove(shape.colorPoint, translation, { repX, repY })
-                // change color of the shape according to its position on the global grid
+                // change color of the shape according to its position on the global grid   // TODO change color computation: repX * dx / dx * axisX ?
                 const xRatio = shape.colorPoint.x / (translation.dx * repetition.axisX); // final grid is size of pattern * repetion width (or heigh)
                 const yRatio = shape.colorPoint.y / (translation.dy * repetition.axisY * Math.sqrt(3) / 2);
                 shape.color = getColorLinearGradient(xRatio, yRatio, gColor);
@@ -72,8 +72,11 @@ export function hexGridGenerator(
 }
 
 function hexMove(pos: Position, translation: Translation, step: { repX: number, repY: number }): Position {
+    // This normalized term avoids the natural shear of hex grids. 
+    // The regular term would be "- translation.dy * step.repY / 2"
+    const lignAlignementTerm = step.repY % 2 === 0 ? 0 : - translation.dy / 2   
     pos = {
-        x: pos.x + translation.dx * step.repX - translation.dy * step.repY / 2,
+        x: pos.x + translation.dx * step.repX + lignAlignementTerm,
         y: pos.y + translation.dy * step.repY * Math.sqrt(3) / 2,
     }
     return pos;
