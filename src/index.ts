@@ -4,7 +4,7 @@ import { squareBigSmallGrid } from "./preset";
 import { Position, Shape } from "./shape";
 
 
-
+// ### DOM object handle ###
 // canvas related vars
 const canvas = document.createElement("canvas");
 const ctx = canvas.getContext("2d");
@@ -12,23 +12,22 @@ const canvasWidth = 1200;
 const canvasHeight = 700;
 canvas.width = canvasWidth;
 canvas.height = canvasHeight;
-document.getElementById("canvasCol").appendChild(canvas);
 canvas.style.border = '1px solid red';
-
+document.getElementById("canvasCol").appendChild(canvas);
 ctx.translate(100, 50);
 
 // used to calc canvas position relative to window
+var offset: Position;
 function reOffset() {
     const BB = canvas.getBoundingClientRect();
     offset = { x: BB.left, y: BB.top };
 }
-var offset: Position;
-
 reOffset();
 window.onscroll = function (e) { reOffset(); }
 window.onresize = function (e) { reOffset(); }
 canvas.onresize = function (e) { reOffset(); }
 
+// ### Handle grid ###
 // save relevant information about shapes drawn on the canvas
 var grid: Grid = [];
 // keep track of canvas state before any move
@@ -42,8 +41,10 @@ grid_original = squareBigSmallGrid;
 grid = cloneDeep(grid_original);
 // modify grid
 gridShuffle(grid);
+// draw the shapes on the canvas
+drawAll(grid);
 
-
+// ### Mouse event stuff ###
 // drag related vars
 var isDragging: boolean = false;
 var startPos: Position;
@@ -51,16 +52,13 @@ var startPos: Position;
 // hold the index of the shape being dragged (if any)
 var selectedShapeIndex: number;
 
-// draw the shapes on the canvas
-drawAll(grid);
-
 // listen for mouse events
 canvas.onmousedown = handleMouseDown;
 canvas.onmousemove = handleMouseMove;
 canvas.onmouseup = handleMouseUp;
 canvas.onmouseout = handleMouseOut;
 
-
+// ### Function zone ###
 function handleMouseDown(e: MouseEvent) {
     // tell the browser we're handling this event
     e.preventDefault();
