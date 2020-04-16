@@ -12,7 +12,7 @@ const squareGrid = (() => {
 
     const pattern: Pattern = [square];
     const translation: Translation = { dx: sideLength, dy: sideLength };
-    const gColor: GradientColors = gColors[0];
+    const gColor = randomGradientColor();
     return gridGenerator(pattern, translation, { axisX: 10, axisY: 10 }, gColor);
 })();
 
@@ -61,7 +61,7 @@ const brickWallGrid = (() => {
 
     const pattern: Pattern = [rectangle1, rectangle2];
     const translation: Translation = { dx: longLength, dy: 2 * shortLength };
-    const gColor = randomGradientColor();
+    const gColor: GradientColors = gColors[0];
     return gridGenerator(pattern, translation, { axisX: 10, axisY: 5 }, gColor);
 })();
 
