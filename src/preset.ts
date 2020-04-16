@@ -1,6 +1,7 @@
 import { GradientColors } from "./color";
-import { gridGenerator, hexGridGenerator, Pattern } from "./gridGenerator";
-import { Square, Triangle, TriangleRotation } from "./shape";
+import { gridGenerator, hexGridGenerator, Pattern, Translation, Grid } from "./gridGenerator";
+import { Square, Triangle, TriangleRotation, Hexagon } from "./shape";
+
 
 const gColor: GradientColors = {
     topLeftColor: { red: 239, green: 252, blue: 84 },
@@ -10,25 +11,47 @@ const gColor: GradientColors = {
 }
 
 // grid of same square
-export const squareGrid = (() => {
-    const square: Square = new Square(50, "rgb(0,0,0)", { x: 0, y: 0 }, 0, 'square');
+const squareGrid = (() => {
+    const sideLength = 50;
+    const square: Square = new Square(sideLength, "rgb(0,0,0)", { x: 0, y: 0 }, 0, 'square');
+
     const pattern: Pattern = [square];
-    return gridGenerator(pattern, { dx: 50, dy: 50 }, { axisX: 10, axisY: 10 }, gColor);
+    const translation: Translation = { dx: sideLength, dy: sideLength };
+    return gridGenerator(pattern, translation, { axisX: 10, axisY: 10 }, gColor);
 })();
 
 // grid of 2 kind of square
-export const squareBigSmallGrid = (() => {
-    const bigSquare: Square = new Square(50, "rgb(0,0,0)", { x: 0, y: 0 }, 0, 'bigSquare');
-    const smallTopSquare: Square = new Square(25, "rgb(0,0,0)", { x: 50, y: 0 }, 0, 'smallSquare');
-    const smallBottomSquare: Square = new Square(25, "rgb(0,0,0)", { x: 50, y: 25 }, 0, 'smallSquare');
+const squareBigSmallGrid = (() => {
+    const sideLength = 50;
+    const bigSquare: Square = new Square(sideLength, "rgb(0,0,0)", { x: 0, y: 0 }, 0, 'bigSquare');
+    const smallTopSquare: Square = new Square(sideLength / 2, "rgb(0,0,0)", { x: sideLength, y: 0 }, 0, 'smallSquare');
+    const smallBottomSquare: Square = new Square(sideLength / 2, "rgb(0,0,0)", { x: sideLength, y: sideLength / 2 }, 0, 'smallSquare');
+
     const pattern: Pattern = [bigSquare, smallTopSquare, smallBottomSquare];
-    return gridGenerator(pattern, { dx: 75, dy: 50 }, { axisX: 8, axisY: 10 }, gColor);
+    const translation: Translation = { dx: 3 * sideLength / 2, dy: sideLength };
+    return gridGenerator(pattern, translation, { axisX: 8, axisY: 10 }, gColor);
 })();
 
 // grid of same triangle
-export const triangleGrid = (() => {
-    const triangleFlat: Triangle = new Triangle(50, "rgb(255,0,0)", { x: 0, y: 0 }, TriangleRotation.Flat, 'triangle');
-    const trianglePointy: Triangle = new Triangle(50, "rgb(255,0,0)", { x: 50, y: 0 }, TriangleRotation.Pointy, 'triangle');
+const triangleGrid = (() => {
+    const sideLength = 50;
+    const triangleFlat: Triangle = new Triangle(sideLength, "rgb(255,0,0)", { x: 0, y: 0 }, TriangleRotation.Flat, 'triangle');
+    const trianglePointy: Triangle = new Triangle(sideLength, "rgb(255,0,0)", { x: sideLength, y: 0 }, TriangleRotation.Pointy, 'triangle');
+
     const pattern: Pattern = [triangleFlat, trianglePointy];
-    return hexGridGenerator(pattern, { dx: 50, dy: 50 }, { axisX: 10, axisY: 10 }, gColor);
+    const translation: Translation = { dx: sideLength, dy: sideLength };
+    return hexGridGenerator(pattern, translation, { axisX: 10, axisY: 10 }, gColor);
 })();
+
+// grid of same hexagon
+const hexagonGrid = (() => {
+    const sideLength = 40;
+    const hexagon: Hexagon = new Hexagon(sideLength, "rgb(255,0,0", { x: 0, y: 0 }, 0, 'hexagon');
+
+    const pattern: Pattern = [hexagon];
+    const translation: Translation = { dx: sideLength * Math.sqrt(3), dy: sideLength * Math.sqrt(3) };
+    return hexGridGenerator(pattern, translation, { axisX: 8, axisY: 8 }, gColor);
+})();
+
+
+export const levels: Grid[] = [squareGrid, hexagonGrid, squareBigSmallGrid, triangleGrid];

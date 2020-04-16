@@ -7,12 +7,11 @@ import { Position, Shape } from "./shape";
 export type Pattern = Shape[]; // Smallest pattern of a periodic grid. Colors set but not revelant
 export type Grid = Shape[];    // Repeated pattern. If sorted, colors create a gradient
 
-
-interface Translation {
+export interface Translation {
     dx: number;
     dy: number;
 }
-interface Repetition {
+export interface Repetition {
     axisX: number;
     axisY: number;
 }
@@ -60,7 +59,7 @@ export function hexGridGenerator(
                 // change shape position
                 shape.position = hexMove(shape.position, translation, { repX, repY })
                 shape.colorPoint = hexMove(shape.colorPoint, translation, { repX, repY })
-                // change color of the shape according to its position on the global grid   // TODO change color computation: repX * dx / dx * axisX ?
+                // change color of the shape according to its position on the global grid
                 const xRatio = shape.colorPoint.x / (translation.dx * repetition.axisX); // final grid is size of pattern * repetion width (or heigh)
                 const yRatio = shape.colorPoint.y / (translation.dy * repetition.axisY * Math.sqrt(3) / 2);
                 shape.color = getColorLinearGradient(xRatio, yRatio, gColor);

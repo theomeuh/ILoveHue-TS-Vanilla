@@ -1,6 +1,6 @@
 import cloneDeep from 'lodash.clonedeep';
 import { Grid } from "./gridGenerator";
-import { squareBigSmallGrid, squareGrid, triangleGrid } from "./preset";
+import { levels as presetLevels } from "./preset";
 import { Position, Shape } from "./shape";
 
 
@@ -14,6 +14,7 @@ canvas.width = canvasWidth;
 canvas.height = canvasHeight;
 canvas.style.border = '1px solid red';
 document.getElementById("canvasCol").appendChild(canvas);
+// some shapes are not defined on positive side of the plane. The grid can slightly go backward
 ctx.translate(150, 50);
 
 // arrows related vars
@@ -39,7 +40,7 @@ var grid_saved: Grid;
 // contains the original grid with color sorted on a gradient.
 var grid_original: Grid;
 // Store preset levels
-const levels: Grid[] = [squareGrid, squareBigSmallGrid, triangleGrid]
+const levels: Grid[] = presetLevels;
 var levelIndex: number = 0;
 levelSetUp();
 

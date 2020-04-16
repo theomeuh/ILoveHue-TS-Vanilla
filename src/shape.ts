@@ -57,7 +57,7 @@ export class Triangle implements Shape {
     rotation: TriangleRotation;
     switchClass: string;
 
-    constructor(sideLength: number, color: string, position: Position, rotation: TriangleRotation,switchClass: string) {
+    constructor(sideLength: number, color: string, position: Position, rotation: TriangleRotation, switchClass: string) {
         this.sideLength = sideLength;
         this.color = color;
         this.position = position;
@@ -107,4 +107,48 @@ export class Triangle implements Shape {
 export enum TriangleRotation {
     Flat = "flat",
     Pointy = "pointy",
+}
+
+
+export class Hexagon implements Shape {
+    sideLength: number;
+    color: string;
+    position: Position;
+    colorPoint: Position;
+    rotation: number;   // TODO implement flat and pointy
+    switchClass: string;
+
+    constructor(sideLength: number, color: string, position: Position, rotation: number, switchClass: string) {
+        this.sideLength = sideLength;
+        this.color = color;
+        this.position = position;
+        this.rotation = rotation;
+        this.switchClass = switchClass;
+
+        this.colorPoint = {
+            x: this.position.x,
+            y: this.position.y + sideLength,
+        }
+    }
+
+    draw(ctx: CanvasRenderingContext2D) {
+        const [x, y, sideLength] = [this.position.x, this.position.y, this.sideLength];
+        ctx.fillStyle = this.color;
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+        ctx.lineTo(x + sideLength * Math.sqrt(3) / 2, y + sideLength / 2);
+        ctx.lineTo(x + sideLength * Math.sqrt(3) / 2, y + sideLength * 3 / 2);
+        ctx.lineTo(x, y + 2 * sideLength);
+        ctx.lineTo(x - sideLength * Math.sqrt(3) / 2, y + sideLength * 3 / 2);
+        ctx.lineTo(x - sideLength * Math.sqrt(3) / 2, y + sideLength / 2);
+        ctx.fill();
+
+        this.drawColorPoint(ctx);
+    }
+    drawColorPoint(ctx: CanvasRenderingContext2D) {
+        ctx.fillStyle = 'black';
+        ctx.beginPath();
+        ctx.arc(this.colorPoint.x, this.colorPoint.y, 2, 0, 2 * Math.PI);
+        ctx.fill();
+    }
 }
