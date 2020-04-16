@@ -64,3 +64,26 @@ function bilinearReg(point: Position, f00: number, f10: number, f01: number, f11
     );
     return value;
 }
+
+const gColor1: GradientColors = {
+    topLeftColor: { red: 239, green: 252, blue: 84 },
+    topRightColor: { red: 120, green: 239, blue: 197 },
+    bottomRigthColor: { red: 74, green: 69, blue: 215 },
+    bottomLeftColor: { red: 235, green: 66, blue: 205 },
+}
+
+const gColor2: GradientColors = {
+    topLeftColor: { red: 70, green: 239, blue: 200 },
+    topRightColor: { red: 216, green: 224, blue: 227 },
+    bottomRigthColor: { red: 235, green: 90, blue: 193 },
+    bottomLeftColor: { red: 91, green: 57, blue: 195 },
+}
+
+export function randomGradientColor(): GradientColors {
+    return gColors[Math.floor(Math.random() * gColors.length)];
+}
+
+export const gColors: GradientColors[] = [
+    gColor1,
+    gColor2
+];
