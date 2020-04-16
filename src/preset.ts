@@ -65,5 +65,30 @@ const brickWallGrid = (() => {
     return gridGenerator(pattern, translation, { axisX: 10, axisY: 5 }, gColor);
 })();
 
+// grid of dissected hexagon
+const dissectedHexagonGrid = (() => {
+    const sideLength = 50;
+    // hexagons
+    const bottomHexagon: Hexagon = new Hexagon(sideLength, "rgb(255,0,0", { x: 0, y: 0 }, 0, 'hexagon');
+    const leftHexagon: Hexagon = new Hexagon(sideLength, "rgb(255,0,0", { x: - sideLength * Math.sqrt(3) / 2, y: - sideLength * 3 / 2 }, 0, 'hexagon');
+    const rigthHexagon: Hexagon = new Hexagon(sideLength, "rgb(255,0,0", { x: sideLength * Math.sqrt(3) / 2, y: - sideLength * 3 / 2 }, 0, 'hexagon');
+    // top triangles
+    // const topLeftTriangle: Triangle = new Triangle(sideLength, "rgb(255,0,0", { x: 0, y: 0 }, 0, 'triangles');
+    // const topRightTriangle: Triangle = new Triangle(sideLength, "rgb(255,0,0", { x: 0, y: 0 }, 0, 'triangles');
 
-export const levels: Grid[] = [squareGrid, hexagonGrid, brickWallGrid, squareBigSmallGrid, triangleGrid];
+    const pattern: Pattern = [
+        bottomHexagon, leftHexagon, rigthHexagon,
+        // topLeftTriangle, topRightTriangle
+    ];
+    const translation: Translation = { dx: sideLength * 2 * Math.sqrt(3), dy: sideLength * 2 * Math.sqrt(3) };
+    return hexGridGenerator(pattern, translation, { axisX: 3, axisY: 3 }, gColor);
+})();
+
+
+export const levels: Grid[] = [
+    dissectedHexagonGrid,
+    squareGrid, hexagonGrid,
+    brickWallGrid,
+    squareBigSmallGrid,
+    triangleGrid
+];
