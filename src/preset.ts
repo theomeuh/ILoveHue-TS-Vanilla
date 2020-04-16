@@ -68,27 +68,47 @@ const brickWallGrid = (() => {
 // grid of dissected hexagon
 const dissectedHexagonGrid = (() => {
     const sideLength = 50;
+    /// Pattern definitions. All hexagon touch the origin. The pattern overflows on negative x and y axis
     // hexagons
     const bottomHexagon: Hexagon = new Hexagon(sideLength, "rgb(255,0,0", { x: 0, y: 0 }, 0, 'hexagon');
     const leftHexagon: Hexagon = new Hexagon(sideLength, "rgb(255,0,0", { x: - sideLength * Math.sqrt(3) / 2, y: - sideLength * 3 / 2 }, 0, 'hexagon');
     const rigthHexagon: Hexagon = new Hexagon(sideLength, "rgb(255,0,0", { x: sideLength * Math.sqrt(3) / 2, y: - sideLength * 3 / 2 }, 0, 'hexagon');
     // top triangles
-    // const topLeftTriangle: Triangle = new Triangle(sideLength, "rgb(255,0,0", { x: 0, y: 0 }, 0, 'triangles');
-    // const topRightTriangle: Triangle = new Triangle(sideLength, "rgb(255,0,0", { x: 0, y: 0 }, 0, 'triangles');
+    const topLeftTriangle: Triangle = new Triangle(sideLength, "rgb(255,0,0", { x: 0, y: -2 * sideLength }, TriangleRotation.Left, 'triangle');
+    const topRightTriangle: Triangle = new Triangle(sideLength, "rgb(255,0,0", { x: 0, y: -2 * sideLength }, TriangleRotation.Right, 'triangle');
+    // left triangles
+    const leftTopTriangle: Triangle = new Triangle(sideLength, "rgb(255,0,0", { x: -Math.sqrt(3) * sideLength, y: 0 }, TriangleRotation.Right, 'triangle');
+    const leftBottomTriangle: Triangle = new Triangle(sideLength, "rgb(255,0,0", { x: -Math.sqrt(3) * sideLength / 2, y: sideLength / 2 }, TriangleRotation.Left, 'triangle');
+    // right triangles
+    const rightTopTriangle: Triangle = new Triangle(sideLength, "rgb(255,0,0", { x: Math.sqrt(3) * sideLength, y: 0 }, TriangleRotation.Left, 'triangle');
+    const rightBottomTriangle: Triangle = new Triangle(sideLength, "rgb(255,0,0", { x: Math.sqrt(3) * sideLength / 2, y: sideLength / 2 }, TriangleRotation.Right, 'triangle');
 
     const pattern: Pattern = [
         bottomHexagon, leftHexagon, rigthHexagon,
-        // topLeftTriangle, topRightTriangle
+        topLeftTriangle, topRightTriangle,
+        leftTopTriangle, leftBottomTriangle,
+        rightTopTriangle, rightBottomTriangle,
     ];
+    // Prevent pattern overflow on negative 
+    const posOffset: Translation = { dx: Math.sqrt(3) * sideLength, dy: 2 * sideLength };
+    for (let shape of pattern) {
+        // TODO define a setter for a shape position 
+        shape.position.x += posOffset.dx;
+        shape.position.y += posOffset.dy;
+        shape.colorPoint.x += posOffset.dx;
+        shape.colorPoint.y += posOffset.dy;
+    }
+
     const translation: Translation = { dx: sideLength * 2 * Math.sqrt(3), dy: sideLength * 2 * Math.sqrt(3) };
     return hexGridGenerator(pattern, translation, { axisX: 3, axisY: 3 }, gColor);
 })();
 
 
 export const levels: Grid[] = [
+    squareGrid, 
+    triangleGrid,
+    hexagonGrid,
     dissectedHexagonGrid,
-    squareGrid, hexagonGrid,
     brickWallGrid,
     squareBigSmallGrid,
-    triangleGrid
 ];

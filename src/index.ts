@@ -15,7 +15,7 @@ canvas.height = canvasHeight;
 canvas.style.border = '1px solid red';
 document.getElementById("canvasCol").appendChild(canvas);
 // some shapes are not defined on positive side of the plane. The grid can slightly go backward
-ctx.translate(200, 100);
+ctx.translate(150, 100);
 
 // arrows related vars
 const leftArrow = document.getElementById('leftArrow');

@@ -64,36 +64,64 @@ export class Triangle implements Shape {
         this.rotation = rotation;
         this.switchClass = switchClass;
 
-        if (this.rotation === TriangleRotation.Flat) {
-            this.colorPoint = {
-                x: this.position.x + this.sideLength / 2,
-                y: this.position.y + (1 / 3) * (Math.sqrt(3) / 2) * this.sideLength,    // y: 1/3 of the triangle height
-            }
-        } else {
-            this.colorPoint = {
-                x: this.position.x,
-                y: this.position.y + (2 / 3) * (Math.sqrt(3) / 2) * this.sideLength,  // y: 2/3 of the triangle height 
-            }
+        switch (this.rotation) {
+            case TriangleRotation.Flat:
+                this.colorPoint = {
+                    x: this.position.x + this.sideLength / 2,
+                    y: this.position.y + (1 / 3) * (Math.sqrt(3) / 2) * this.sideLength,    // y: 1/3 of the triangle height
+                };
+                break;
+            case TriangleRotation.Pointy:
+                this.colorPoint = {
+                    x: this.position.x,
+                    y: this.position.y + (2 / 3) * (Math.sqrt(3) / 2) * this.sideLength,  // y: 2/3 of the triangle height 
+                };
+                break;
+            case TriangleRotation.Left:
+                this.colorPoint = {
+                    x: this.position.x - (1 / 3) * (Math.sqrt(3) / 2) * this.sideLength, // x: 1/3 of the triangle width 
+                    y: this.position.y + this.sideLength / 2,
+                };
+                break;
+            case TriangleRotation.Right:
+                this.colorPoint = {
+                    x: this.position.x + (1 / 3) * (Math.sqrt(3) / 2) * this.sideLength, // x: 1/3 of the triangle width
+                    y: this.position.y + this.sideLength / 2,
+                };
+                break;
+            default:
+                console.log("Unknow triangle rotation");
+                break;
         }
     }
 
     draw(ctx: CanvasRenderingContext2D) {
-        if (this.rotation === TriangleRotation.Flat) {
-            ctx.fillStyle = this.color;
-            ctx.beginPath();
-            ctx.moveTo(this.position.x, this.position.y);
-            ctx.lineTo(this.position.x + this.sideLength, this.position.y);
-            ctx.lineTo(this.position.x + this.sideLength / 2, this.position.y + this.sideLength * Math.sqrt(3) / 2);
-            ctx.fill();
+        ctx.fillStyle = this.color;
+        ctx.beginPath();
+        ctx.moveTo(this.position.x, this.position.y);
+        switch (this.rotation) {
+            case TriangleRotation.Flat:
+                ctx.lineTo(this.position.x + this.sideLength, this.position.y);
+                ctx.lineTo(this.position.x + this.sideLength / 2, this.position.y + this.sideLength * Math.sqrt(3) / 2);
+                break;
+            case TriangleRotation.Pointy:
+                ctx.lineTo(this.position.x + this.sideLength / 2, this.position.y + this.sideLength * Math.sqrt(3) / 2);
+                ctx.lineTo(this.position.x - this.sideLength / 2, this.position.y + this.sideLength * Math.sqrt(3) / 2);
+                break;
+            case TriangleRotation.Left:
+                ctx.lineTo(this.position.x - this.sideLength * Math.sqrt(3) / 2, this.position.y + this.sideLength / 2)
+                ctx.lineTo(this.position.x, this.position.y + this.sideLength);
+                break;
+            case TriangleRotation.Right:
+                ctx.lineTo(this.position.x + this.sideLength * Math.sqrt(3) / 2, this.position.y + this.sideLength / 2)
+                ctx.lineTo(this.position.x, this.position.y + this.sideLength);
+                break;
+            default:
+                console.log("Unknow triangle rotation");
+                break;
         }
-        else {
-            ctx.fillStyle = this.color;
-            ctx.beginPath();
-            ctx.moveTo(this.position.x, this.position.y);
-            ctx.lineTo(this.position.x + this.sideLength / 2, this.position.y + this.sideLength * Math.sqrt(3) / 2);
-            ctx.lineTo(this.position.x - this.sideLength / 2, this.position.y + this.sideLength * Math.sqrt(3) / 2);
-            ctx.fill();
-        }
+        ctx.fill();
+
         this.drawColorPoint(ctx);
     }
     drawColorPoint(ctx: CanvasRenderingContext2D) {
@@ -107,6 +135,8 @@ export class Triangle implements Shape {
 export enum TriangleRotation {
     Flat = "flat",
     Pointy = "pointy",
+    Left = "left",
+    Right = "right",
 }
 
 
