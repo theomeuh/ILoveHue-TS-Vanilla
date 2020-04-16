@@ -73,7 +73,7 @@ export function hexGridGenerator(
 function hexMove(pos: Position, translation: Translation, step: { repX: number, repY: number }): Position {
     // This normalized term avoids the natural shear of hex grids. 
     // The regular term would be "- translation.dy * step.repY / 2"
-    const lignAlignementTerm = step.repY % 2 === 0 ? 0 : - translation.dy / 2
+    const lignAlignementTerm = step.repY % 2 === 0 ? 0 : translation.dy / 2
     pos = {
         x: pos.x + translation.dx * step.repX + lignAlignementTerm,
         y: pos.y + translation.dy * step.repY * Math.sqrt(3) / 2,
