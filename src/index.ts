@@ -2,6 +2,7 @@ import cloneDeep from 'lodash.clonedeep';
 import { Grid } from "./gridGenerator";
 import { levels as presetLevels } from "./preset";
 import { Position, Shape } from "./shape";
+import { victoryMessageGenerator } from "./kindnessGenerator";
 
 
 // ### DOM object handle ###
