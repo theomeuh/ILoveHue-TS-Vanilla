@@ -42,6 +42,13 @@ export function getColorLinearGradient(xRatio: number, yRatio: number, gColor: G
             gColor.bottomRigthColor.blue, // f11
         )),
     }
+    if (finalColor.red < 0 || finalColor.red > 255 ||
+        finalColor.green < 0 || finalColor.green > 255 ||
+        finalColor.blue < 0 || finalColor.blue > 255) {
+        console.log("Color regressed outside boundaries. The color will display but will not be draggable");
+        console.log(finalColor);
+        console.log(rgbStr(finalColor));
+    }
     return rgbStr(finalColor);
 }
 
