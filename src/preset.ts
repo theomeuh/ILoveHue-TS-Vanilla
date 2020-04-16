@@ -1,6 +1,6 @@
 import { GradientColors } from "./color";
 import { gridGenerator, hexGridGenerator, Pattern, Translation, Grid } from "./gridGenerator";
-import { Square, Triangle, TriangleRotation, Hexagon } from "./shape";
+import { Square, Triangle, TriangleRotation, Hexagon, Rectangle } from "./shape";
 
 
 const gColor: GradientColors = {
@@ -53,5 +53,17 @@ const hexagonGrid = (() => {
     return hexGridGenerator(pattern, translation, { axisX: 8, axisY: 8 }, gColor);
 })();
 
+// brick wall grid
+const brickWallGrid = (() => {
+    const longLength = 65;
+    const shortLength = longLength * 2 / (1 + Math.sqrt(5));
+    const rectangle1: Rectangle = new Rectangle(shortLength, longLength, "rgb(255,0,0", { x: 0, y: 0 }, 0, 'hexagon');
+    const rectangle2: Rectangle = new Rectangle(shortLength, longLength, "rgb(255,0,0", { x: -longLength / 2, y: shortLength }, 0, 'hexagon');
 
-export const levels: Grid[] = [squareGrid, hexagonGrid, squareBigSmallGrid, triangleGrid];
+    const pattern: Pattern = [rectangle1, rectangle2];
+    const translation: Translation = { dx: longLength, dy: 2 * shortLength };
+    return gridGenerator(pattern, translation, { axisX: 10, axisY: 5 }, gColor);
+})();
+
+
+export const levels: Grid[] = [squareGrid, hexagonGrid, brickWallGrid, squareBigSmallGrid, triangleGrid];

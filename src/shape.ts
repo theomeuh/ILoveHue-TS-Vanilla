@@ -152,3 +152,41 @@ export class Hexagon implements Shape {
         ctx.fill();
     }
 }
+
+export class Rectangle implements Shape {   // TODO derive Square from Rectangle
+    // For instance Rectangle is defined to build a grid that look like a brick wall
+    shortLength: number;
+    longLength: number;
+    color: string;
+    position: Position;
+    colorPoint: Position;
+    rotation: number;   // TODO implement flat and pointy
+    switchClass: string;
+
+    constructor(shortLength: number, longLength: number, color: string, position: Position, rotation: number, switchClass: string) {
+        this.shortLength = shortLength;
+        this.longLength = longLength;
+        this.color = color;
+        this.position = position;
+        this.rotation = rotation;
+        this.switchClass = switchClass;
+
+        this.colorPoint = {
+            x: this.position.x + longLength / 2,
+            y: this.position.y + shortLength / 2,
+        }
+    }
+
+    draw(ctx: CanvasRenderingContext2D) {
+        ctx.fillStyle = this.color;
+        ctx.fillRect(this.position.x, this.position.y, this.longLength, this.shortLength);
+
+        this.drawColorPoint(ctx);
+    }
+    drawColorPoint(ctx: CanvasRenderingContext2D) {
+        ctx.fillStyle = 'black';
+        ctx.beginPath();
+        ctx.arc(this.colorPoint.x, this.colorPoint.y, 2, 0, 2 * Math.PI);
+        ctx.fill();
+    }
+}
