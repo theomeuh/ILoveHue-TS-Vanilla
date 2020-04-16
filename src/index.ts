@@ -213,11 +213,11 @@ function drawAll(shapes: Shape[]) {
 }
 
 function gridShuffle(grid: Grid) {
-    const tiles_count = grid.length;
     const switchClasses = [...new Set(grid.map(x => x.switchClass))] // list of distinct switch classes
     for (let switchClass of switchClasses) {
         let wip_shapes = grid.filter(x => x.switchClass === switchClass);
-        for (let i = 0; i < 1; i++) {   // TODO change shuffle number;
+        let shuffleFactor = Math.floor(wip_shapes.length / 10);
+        for (let i = 0; i < shuffleFactor; i++) {
             const index1 = Math.floor(Math.random() * wip_shapes.length);
             const index2 = Math.floor(Math.random() * wip_shapes.length);
             // switch colors with a destructuring pattern
@@ -237,10 +237,11 @@ function checkGrid(grid_original: Grid, grid: Grid): boolean {
 }
 
 function levelSetUp() {
+    // set the level boardgame
     grid_original = levels[levelIndex];
-
+    // copy that preserve the original one
     grid = cloneDeep(grid_original);
-    // modify grid
+    // shuffle the grid
     gridShuffle(grid);
     // draw the shapes on the canvas
     drawAll(grid);
