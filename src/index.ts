@@ -126,7 +126,10 @@ function handleMouseUp(e: MouseEvent) {
 
     // is the grid sorted ?
     if (checkGrid(grid_original, grid)) {
-        alert("gagné !!")
+        const message = victoryMessageGenerator().concat('\n', 'You win!');
+        alert(message);
+        levelIndex = (levelIndex + 1) % levels.length;
+        levelSetUp()
     }
 }
 
@@ -176,7 +179,7 @@ function handleClickLeftArrow(e: MouseEvent) {
     // tell the browser we're handling this event
     e.preventDefault();
     e.stopPropagation();
-    levelIndex = (levelIndex - 1) % levels.length;
+    levelIndex = levelIndex - 1 < 0 ? levelIndex - 1 + levels.length : levelIndex - 1;  // Euclidean modulo: always positive
     levelSetUp();
 }
 
