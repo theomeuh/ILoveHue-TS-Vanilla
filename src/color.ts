@@ -42,12 +42,11 @@ export function getColorLinearGradient(xRatio: number, yRatio: number, gColor: G
             gColor.bottomRigthColor.blue, // f11
         )),
     }
-    if (finalColor.red < 0 || finalColor.red > 255 ||
-        finalColor.green < 0 || finalColor.green > 255 ||
-        finalColor.blue < 0 || finalColor.blue > 255) {
-        console.log("Color regressed outside boundaries. The color will display but will not be draggable");
-        console.log(finalColor);
-        console.log(rgbStr(finalColor));
+    // correct out of boudaries value
+    for (let colorValue of Object.values(finalColor)) {
+        // if color value outside [0,255], bring it back in that interval
+        colorValue = colorValue < 0 ? 0 : colorValue;
+        colorValue = colorValue > 255 ? 255 : colorValue;
     }
     return rgbStr(finalColor);
 }
@@ -79,11 +78,24 @@ const gColor2: GradientColors = {
     bottomLeftColor: { red: 91, green: 57, blue: 195 },
 }
 
+const gColor3: GradientColors = {
+    topLeftColor: { red: 232, green: 67, blue: 65 },
+    topRightColor: { red: 28, green: 48, blue: 52 },
+    bottomRigthColor: { red: 0, green: 221, blue: 229 },
+    bottomLeftColor: { red: 211, green: 235, blue: 115 },
+}
+
+const gColor4: GradientColors = {
+    topLeftColor: { red: 241, green: 216, blue: 245 },
+    topRightColor: { red: 98, green: 90, blue: 255 },
+    bottomRigthColor: { red: 154, green: 50, blue: 103 },
+    bottomLeftColor: { red: 194, green: 109, blue: 44 },
+}
+
 export function randomGradientColor(): GradientColors {
     return gColors[Math.floor(Math.random() * gColors.length)];
 }
 
 export const gColors: GradientColors[] = [
-    gColor1,
-    gColor2
+    gColor1, gColor2, gColor3, gColor4
 ];
