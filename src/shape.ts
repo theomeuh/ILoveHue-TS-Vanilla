@@ -42,7 +42,7 @@ export class Square implements Shape {
     drawColorPoint(ctx: CanvasRenderingContext2D) {
         ctx.fillStyle = 'black';
         ctx.beginPath();
-        ctx.arc(this.colorPoint.x, this.colorPoint.y, 2, 0, 2 * Math.PI);
+        ctx.arc(this.colorPoint.x, this.colorPoint.y, 1, 0, 2 * Math.PI);
         ctx.fill();
     }
 }
@@ -127,7 +127,7 @@ export class Triangle implements Shape {
     drawColorPoint(ctx: CanvasRenderingContext2D) {
         ctx.fillStyle = 'black';
         ctx.beginPath();
-        ctx.arc(this.colorPoint.x, this.colorPoint.y, 2, 0, 2 * Math.PI);
+        ctx.arc(this.colorPoint.x, this.colorPoint.y, 1, 0, 2 * Math.PI);
         ctx.fill();
     }
 }
@@ -178,7 +178,7 @@ export class Hexagon implements Shape {
     drawColorPoint(ctx: CanvasRenderingContext2D) {
         ctx.fillStyle = 'black';
         ctx.beginPath();
-        ctx.arc(this.colorPoint.x, this.colorPoint.y, 2, 0, 2 * Math.PI);
+        ctx.arc(this.colorPoint.x, this.colorPoint.y, 1, 0, 2 * Math.PI);
         ctx.fill();
     }
 }
@@ -216,7 +216,7 @@ export class Rectangle implements Shape {   // TODO derive Square from Rectangle
     drawColorPoint(ctx: CanvasRenderingContext2D) {
         ctx.fillStyle = 'black';
         ctx.beginPath();
-        ctx.arc(this.colorPoint.x, this.colorPoint.y, 2, 0, 2 * Math.PI);
+        ctx.arc(this.colorPoint.x, this.colorPoint.y, 1, 0, 2 * Math.PI);
         ctx.fill();
     }
 }
