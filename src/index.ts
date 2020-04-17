@@ -13,7 +13,7 @@ const canvasWidth = 900;
 const canvasHeight = 700;
 canvas.width = canvasWidth;
 canvas.height = canvasHeight;
-canvas.style.border = '1px solid red';
+canvas.style.border = '1px solid #63eccd';
 document.getElementById("canvasCol").appendChild(canvas);
 // some shapes are not defined on positive side of the plane. The grid can slightly go backward
 ctx.translate(150, 100);
