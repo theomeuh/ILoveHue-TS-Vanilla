@@ -43,10 +43,11 @@ export function getColorLinearGradient(xRatio: number, yRatio: number, gColor: G
         )),
     }
     // correct out of boudaries value
-    for (let colorValue of Object.values(finalColor)) {
+    for (let [color, colorValue] of Object.entries(finalColor)) {
         // if color value outside [0,255], bring it back in that interval
-        colorValue = colorValue < 0 ? 0 : colorValue;
-        colorValue = colorValue > 255 ? 255 : colorValue;
+        colorValue = Math.max(0, colorValue);
+        colorValue = Math.min(255, colorValue);
+        finalColor[color] = colorValue;
     }
     return rgbStr(finalColor);
 }
@@ -85,14 +86,14 @@ const gDarkRainbow: GradientColors = {
     bottomLeftColor: { red: 211, green: 235, blue: 115 },
 }
 
-const gEspresso: GradientColors = {
+const gSunset: GradientColors = {
     topLeftColor: { red: 241, green: 216, blue: 245 },
     topRightColor: { red: 98, green: 90, blue: 255 },
     bottomRigthColor: { red: 154, green: 50, blue: 103 },
     bottomLeftColor: { red: 194, green: 109, blue: 44 },
 }
 
-const gSunset: GradientColors = {
+const gEspresso: GradientColors = {          // Very hard and sometimes two shapes have exactly the same color, so it is unplayable
     topLeftColor: { red: 15, green: 29, blue: 38 },
     topRightColor: { red: 106, green: 115, blue: 102 },
     bottomRigthColor: { red: 89, green: 57, blue: 50 },
@@ -107,14 +108,14 @@ const gCreamCoffee: GradientColors = {
 }
 
 export function randomGradientColor(): GradientColors {
-    return gColors[Math.floor(Math.random() * gColors.length)];
+    const gColorList: GradientColors[] = Object.values(gColors);
+    return gColorList[Math.floor(Math.random() * gColorList.length)];
 }
 
-export const gColors: GradientColors[] = [
-    gRainbow,
-    gFadedDream,
-    gDarkRainbow,
-    gEspresso,
-    gSunset,
-    gCreamCoffee,
-];
+export const gColors: { [id: string]: GradientColors } = {
+    rainbow: gRainbow,
+    fadedDream: gFadedDream,
+    darkRainbow: gDarkRainbow,
+    sunset: gSunset,
+    creamCoffee: gCreamCoffee,
+};

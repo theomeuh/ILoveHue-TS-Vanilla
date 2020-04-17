@@ -12,21 +12,21 @@ const squareGrid = (() => {
 
     const pattern: Pattern = [square];
     const translation: Translation = { dx: sideLength, dy: sideLength };
-    const gColor = randomGradientColor();
+    const gColor = gColors['fadedDream'];
     return gridGenerator(pattern, translation, { axisX: 10, axisY: 10 }, gColor);
 })();
 
 // grid of 2 kind of square
 const squareBigSmallGrid = (() => {
-    const sideLength = 50;
+    const sideLength = 60;
     const bigSquare: Square = new Square(sideLength, "rgb(0,0,0)", { x: 0, y: 0 }, 0, 'bigSquare');
     const smallTopSquare: Square = new Square(sideLength / 2, "rgb(0,0,0)", { x: sideLength, y: 0 }, 0, 'smallSquare');
     const smallBottomSquare: Square = new Square(sideLength / 2, "rgb(0,0,0)", { x: sideLength, y: sideLength / 2 }, 0, 'smallSquare');
 
     const pattern: Pattern = [bigSquare, smallTopSquare, smallBottomSquare];
     const translation: Translation = { dx: 3 * sideLength / 2, dy: sideLength };
-    const gColor = randomGradientColor();
-    return gridGenerator(pattern, translation, { axisX: 8, axisY: 10 }, gColor);
+    const gColor = gColors['rainbow'];
+    return gridGenerator(pattern, translation, { axisX: 6, axisY: 8 }, gColor);
 })();
 
 // grid of same triangle
@@ -37,7 +37,7 @@ const triangleGrid = (() => {
 
     const pattern: Pattern = [triangleFlat, trianglePointy];
     const translation: Translation = { dx: sideLength, dy: sideLength };
-    const gColor = randomGradientColor();
+    const gColor = gColors['darkRainbow'];
     return hexGridGenerator(pattern, translation, { axisX: 10, axisY: 10 }, gColor);
 })();
 
@@ -48,7 +48,7 @@ const hexagonGrid = (() => {
 
     const pattern: Pattern = [hexagon];
     const translation: Translation = { dx: sideLength * Math.sqrt(3), dy: sideLength * Math.sqrt(3) };
-    const gColor = randomGradientColor();
+    const gColor = gColors['fadedDream'];
     return hexGridGenerator(pattern, translation, { axisX: 8, axisY: 8 }, gColor);
 })();
 
@@ -61,7 +61,7 @@ const brickWallGrid = (() => {
 
     const pattern: Pattern = [rectangle1, rectangle2];
     const translation: Translation = { dx: longLength, dy: 2 * shortLength };
-    const gColor: GradientColors = gColors[0];
+    const gColor: GradientColors = randomGradientColor()
     return gridGenerator(pattern, translation, { axisX: 10, axisY: 5 }, gColor);
 })();
 
@@ -100,7 +100,7 @@ const dissectedHexagonGrid = (() => {
     }
 
     const translation: Translation = { dx: sideLength * 2 * Math.sqrt(3), dy: sideLength * 2 * Math.sqrt(3) };
-    const gColor = randomGradientColor();
+    const gColor = gColors['sunset'];
     return hexGridGenerator(pattern, translation, { axisX: 3, axisY: 3 }, gColor);
 })();
 
