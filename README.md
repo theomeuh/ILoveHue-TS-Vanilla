@@ -1,6 +1,7 @@
 
 ## The project
-This is POC to build a puzzle game in TypeScript. To complete a level, sort every tile by color.
+This is a POC to build a puzzle game in TypeScript. Is is completely inspired by the smartphone game **I Love Hue** from "Zut!"
+To complete a level, sort every tile by color.
 
 Here are a few screenshot:
 ![introGrid](./images/firstPuzzle.png)
