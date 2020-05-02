@@ -1,4 +1,12 @@
 
+## The project
+This is POC to build a puzzle game in TypeScript. To complete a level, sort every tile by color.
+
+Here are a few screenshot:
+![introGrid](./images/firstPuzzle.png)
+![complexGrid](./images/complexGrid.png)
+
+
 ## Running
 Everything you need is in dist folder.
 
